@@ -1,5 +1,5 @@
 <?php
-session_start();
+// session_start();
 $errors = array();
 
 $mysqli = new mysqli("localhost", "root", "", "shri");

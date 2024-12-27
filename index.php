@@ -79,7 +79,7 @@
             background-color: #F0F4F8;
         }
         #about h1{
-            padding-top: 80px;
+            padding-top: 150px;
             font-size: 40px;
             font-weight: bold;
             text-align: center;
@@ -99,7 +99,7 @@
             text-decoration: underline;
         }
         #services{
-            height: 400px;
+            height: 120vh;
             background-color: black;
         }
         #services h1{
@@ -152,6 +152,80 @@
         .sub-menu-link span{
             margin-top: -15px;
             margin-right: 5px;
+        }
+
+
+        .table1 table{
+            margin: 30px;
+            height: 200px;
+            width: 95%;
+            border: 1px solid #ddd;
+        }
+        .table1 table thead{
+            background-color: rgb(144, 159, 120);
+            border: 1px solid #ddd;
+        }
+        .table1 table thead th{
+            padding: 5px;
+            border: 1px solid #ddd;
+        }
+        .table1 table tbody{
+            background-color: #fcf8f8d1;
+            border: 1px solid #ddd;
+        }
+        .table1 table tbody th{
+            padding: 5px;
+            border: 1px solid #ddd;
+            font-weight: normal;
+        }
+        .table1 table tbody th button{
+            padding: 7px;
+            background-color: orange;
+            color: white;
+            font-size: 12px;
+            border-radius: 5px;
+            border: 1px solid orange;
+        }
+        .close{
+            background-color: orange;
+            color: white;
+            border-radius: 5px;
+            font-size: 16px;
+            border: 2px solid orange;
+        }
+        .modal{
+            height: 700px;
+           
+        }
+        .modal-body table tbody{
+            border: none;
+        }
+        .modal-body table tbody tr th{
+            border: none;
+            font-size: 15px;
+            text-align: start;
+            padding: 5px;
+        }
+        .modal-body table tbody tr th:first-child{
+            padding-right: 50px;
+        }
+        .modal-body table{
+            padding: 20px 0 20px 0;
+        }
+        .mod{
+            margin-right: 30px;
+            color: green;
+            font-weight: bold;
+            vertical-align: top;
+        }
+        .mod1{
+            color: black;
+            padding-left: 150px;
+            font-weight: 300;
+            vertical-align: top;
+        }
+        .carousel-item img{
+            height: 300px;
         }
     </style>
 </head>
@@ -235,6 +309,236 @@
  
         <main id="services">
             <h1>Our Services</h1>
+
+
+            
+
+
+            <div class="table1">
+                <table>
+                    <thead>
+                        <tr class="text-center fs-4 fw-bold">
+                            <th>Sr.No.</th>
+                            <th>Test</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center fs-5 fw-bold">
+                            <th>1</th>
+                            <th>CT Scan</th>
+                            <th><button type="button" data-bs-toggle="modal" class="fs-6 fw-bold" data-bs-target="#details1">More Info</button></th>
+                        </tr>
+                        <tr class="text-center fs-5 fw-bold">
+                            <th>2</th>
+                            <th>ECG Test</th>
+                            <th><button type="button" data-bs-toggle="modal" class="fs-6 fw-bold" data-bs-target="#details2">More Info</button></th>
+                        </tr>
+                        <tr class="text-center fs-5 fw-bold">
+                            <th>3</th>
+                            <th>EEG Test</th>
+                            <th><button type="button" data-bs-toggle="modal" class="fs-6 fw-bold" data-bs-target="#details3">More Info</button></th>
+                        </tr>
+                        <tr class="text-center fs-5 fw-bold">
+                            <th>4</th>
+                            <th>Ultrasound Test</th>
+                            <th><button type="button" data-bs-toggle="modal" class="fs-6 fw-bold" data-bs-target="#details4">More Info</button></th>
+                        </tr>
+                        <tr class="text-center fs-5 fw-bold">
+                            <th>5</th>
+                            <th>Blood Test</th>
+                            <th><button type="button" data-bs-toggle="modal" class="fs-6 fw-bold" data-bs-target="#details5">More Info</button></th>
+                        </tr>
+                        <tr class="text-center fs-5 fw-bold">
+                            <th>6</th>
+                            <th>X-Ray</th>
+                            <th><button type="button" class="fs-6 fw-bold" data-bs-toggle="modal" data-bs-target="#details6">More Info</button></th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            
+            <div class="modal fade mb-5" id="details1">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Details</h4>
+                            <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th class="mod">Test Name:</th>
+                                        <th class="mod1">CT Scan</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Fee:</th>
+                                        <th class="mod1">$20</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Info:</th>
+                                        <th class="mod1">A CT (Computed Tomography) scan is a medical imaging procedure that uses X-rays and computer technology to create detailed cross-sectional images of the body. It provides a more comprehensive view than standard X-rays, allowing doctors to examine bones, organs, blood vessels, and soft tissues with precision. CT scans are commonly used to diagnose conditions such as tumors, fractures, infections, and internal bleeding, as well as to guide certain medical treatments. The procedure is non-invasive, quick, and often critical for accurate diagnosis and effective treatment planning.</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade mb-5" id="details2">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Details</h4>
+                            <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th class="mod">Test Name:</th>
+                                        <th class="mod1">ECG Test</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Fee:</th>
+                                        <th class="mod1">$25</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Info:</th>
+                                        <th class="mod1">An ECG (Electrocardiogram) test is a simple and non-invasive procedure that records the electrical activity of the heart. It helps doctors evaluate the heart's rhythm, detect irregularities, and identify conditions such as arrhythmias, heart attacks, or structural abnormalities. During the test, small sensors called electrodes are attached to the skin on the chest, arms, and legs, capturing the heart's electrical signals. The procedure is painless, quick, and plays a vital role in diagnosing heart-related issues and monitoring overall cardiac health.</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade mb-5" id="details3">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Details</h4>
+                            <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th class="mod">Test Name:</th>
+                                        <th class="mod1">EEG Test</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Fee:</th>
+                                        <th class="mod1">$18</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Info:</th>
+                                        <th class="mod1">An EEG (Electroencephalogram) test is a non-invasive diagnostic procedure used to measure and record electrical activity in the brain. It helps doctors evaluate brain function and diagnose conditions such as epilepsy, sleep disorders, brain tumors, and other neurological issues. During the test, small electrodes are placed on the scalp to detect electrical impulses produced by neurons in the brain. The procedure is painless and typically lasts 20-60 minutes, though longer sessions may be required for certain diagnoses. EEGs are crucial for understanding brain activity and guiding treatment plans for various neurological conditions.</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade mb-5" id="details4">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Details</h4>
+                            <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th class="mod">Test Name:</th>
+                                        <th class="mod1">Ultrasound Test</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Fee:</th>
+                                        <th class="mod1">$20</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Info:</th>
+                                        <th class="mod1">An ultrasound test, also known as sonography, is a non-invasive diagnostic imaging procedure that uses high-frequency sound waves to create real-time images of organs, tissues, and blood flow inside the body. It is widely used to monitor pregnancies, diagnose conditions related to the abdomen, heart, and blood vessels, and guide certain medical procedures.</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade mb-5" id="details5">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Details</h4>
+                            <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th class="mod">Test Name:</th>
+                                        <th class="mod1">Blood Test</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Fee:</th>
+                                        <th class="mod1">$20</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Info:</th>
+                                        <th class="mod1">A blood test is a common diagnostic procedure used to analyze a small sample of blood to assess overall health, detect diseases, or monitor medical conditions. It provides valuable information about various components of the blood, including red and white blood cells, platelets, hemoglobin, cholesterol levels, glucose levels, and electrolytes.</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="modal fade mb-5" id="details6">
+                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4>Details</h4>
+                            <button class="btn btn-close" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th class="mod">Test Name:</th>
+                                        <th class="mod1">X-Ray</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Fee:</th>
+                                        <th class="mod1">$20</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="mod">Test Info:</th>
+                                        <th class="mod1">An X-ray is a diagnostic imaging technique that uses a small amount of ionizing radiation to create images of the inside of the body. It is commonly used to examine bones, detect fractures, identify infections, monitor the progression of diseases like arthritis, or evaluate the condition of organs such as the lungs and heart.</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <div id="carouselExampleCaptions" class="carousel slide">
                 <div class="carousel-indicators">
                   <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -253,13 +557,7 @@
                       <p  style="color: aqua;"class="fw-bold fs-3 ">Our CT Scan sservices provide advanced, high-resolution imaging to ensure accurate diagnosis and treatment planning with minimal discomfort.</p>
                     </div>
                   </div>
-                  <div class="carousel-item">
-                    <img src="./public/images/mri.jpg" class="d-block w-100" alt="...">
-                    <div class="carousel-caption d-none d-md-block">
-                      <h5 style="color: red;" class="fw-bold fs-1 ">MRI Scan</h5>
-                      <p style="color: aqua;" class="fw-bold fs-3 ">Providing clear, detailed images of soft tissues and organs for accurate diagnosis without radiation</p>
-                    </div>
-                  </div>
+                  
                   <div class="carousel-item">
                     <img src="./public/images/blood.jpg" class="d-block w-100" alt="...">
                     <div class="carousel-caption d-none d-md-block">
@@ -305,6 +603,8 @@
                   <span class="text-black fw-bold fs-5">Next</span>
                 </button>
               </div>
+
+            
         </main>
 
     </section>

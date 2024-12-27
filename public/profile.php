@@ -1,9 +1,29 @@
 <?php include('./datafield/server.php'); ?>
-<?php include('./datafield/bookserver.php'); ?>
-<?php include('./datafield/errors.php'); ?>
+<!-- <?php include('./datafield/bookserver.php'); ?>
+<?php include('./datafield/errors.php'); ?> -->
 
 
 <!DOCTYPE html>
+
+<?php 
+$mysqli = new mysqli("localhost", "root", "", "shri");
+if(!isset($_SESSION['login_sess']))
+{
+	header("location: ../../loginfield/Ulogin.php");
+}
+$Name =$_SESSION['login_Name'];
+$findresult = mysqli_query($mysqli, "SELECT * FROM `user` WHERE Name=('$Name')");
+if($result = mysqli_fetch_array($findresult))
+{
+	$userName = $result['userName'];
+	$Name = $result['Name'];
+	$Address = $result['Address'];
+	$ContactNumber = $result['ContactNumber'];
+	$Email = $result['Email'];
+}
+?>
+
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -52,9 +72,10 @@
             align-items: center;
         }
         .img img{
-            height: 200px;
-            width: 200px;
+            height: 300px;
+            width: 300px;
             border-radius: 50%;
+            border: 2px solid black;
 
         }
         header {
@@ -115,6 +136,7 @@
     
 </head>
 <body>
+    
     <header>
         <nav class="navbar navbar-expand-lg text-light">
             <div class="container-fluid">
@@ -135,7 +157,8 @@
                         </li>
                         <li class="nav-item">
                             <a href="./ulogin.php" class="nav-link fs-5 fw-bold">Logout</a>
-                        </li>                        
+                        </li>
+                                                
                     </ul>
                 </div>
                 
@@ -146,11 +169,7 @@
 
     <section id="profile">
         <div class="prof col-4 img">
-            <img src="./Hitman.jpg" alt="">
-            <dl>
-                <dt class="mt-5">Full Name:</dt>
-                <dt class="mt-3">Full Name</dt>
-            </dl>
+        <img src="./images/blood.jpg">
         </div>
         <div class=" prof col-6 info">
             <h1 class="text-center mt-5 fw-bold text-success" >Your Information</h1>
@@ -158,33 +177,36 @@
                 <div class="row">
                     <div class="col-md-6 d-flex flex-column">
                         <label class="fw-bold fs-5 mt-3">Username:</label>
-                        <label class="mt-3">Username</label>
+                        <label class="mt-3"><?php echo $result['userName']; ?></label>
+                    </div>
+
+                    <div class="col-md-6 d-flex flex-column">
+                        <label class="fw-bold fs-5 mt-3">Full Name:</label>
+                        <label class="mt-3 fs-5"><?php echo $Name; ?></label>
+                    </div>
+                   
+                    
+                </div>
+                <div class="row mt-5">
+
+                    <div class="col-md-6 d-flex flex-column">
+                        <label class="fw-bold fs-5 mt-3">Email Id:</label>
+                        <label class="fs-5 mt-3"><?php echo $Email; ?></label>
+                        
                     </div>
                     <div class="col-md-6 d-flex flex-column">
                         <label class="fw-bold fs-5 mt-3">Contact Number:</label>
-                        <label class="mt-3 fs-5">Contact Number:</label>
+                        <label class="mt-3 fs-5"><?php echo $ContactNumber; ?></label>
                     </div>
                     
                 </div>
                 <div class="row mt-5">
                     <div class="col-md-6 d-flex flex-column">
-                        <label class="fw-bold fs-5 mt-3">Email Id:</label>
-                        <label class="fs-5 mt-3">Email</label>
-                        
-                    </div>
-                    <div class="col-md-6 d-flex flex-column">
-                        <label class="fw-bold fs-5 mt-3">Your Password:</label>
-                        <label class="fs-5 mt-3">password</label>
-                        
-                    </div>
-                </div>
-                <div class="row mt-5">
-                    <div class="col-md-6 d-flex flex-column">
                         <label class="fw-bold fs-5 mt-3">Address:</label>
-                        <label class="mt-3 fs-5">Address</label>
+                        <label class="mt-3 fs-5"><?php echo $Address; ?></label>
                     </div>
                     <div class="col-md-6 d-flex flex-column">
-                        <a href="./edit.html" class="btn btn-warning w-50 mt-5 fw-bold text-decoration-none">
+                        <a href="./edit.php" class="btn btn-warning w-50 mt-5 fw-bold text-decoration-none">
                             Edit
                         </a>
                     </div>

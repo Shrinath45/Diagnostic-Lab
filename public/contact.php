@@ -1,6 +1,6 @@
 <?php include('./datafield/server.php'); ?>
-<?php include('./datafield/bookserver.php'); ?>
-<?php include('./datafield/errors.php'); ?>
+<!-- <?php include('./datafield/bookserver.php'); ?>
+<?php include('./datafield/errors.php'); ?> -->
 
 <!DOCTYPE html>
 <html lang="en">
