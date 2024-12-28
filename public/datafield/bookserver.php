@@ -176,6 +176,8 @@ if (isset($_POST['cancel'])) {
 	}
 	if (count($errors) == 0) {
 
+		
+
 		$query5 = "DELETE FROM bookAppointment WHERE AppoID='$AppoID2' ";
 		if ($mysqli->query($query5)) {
 

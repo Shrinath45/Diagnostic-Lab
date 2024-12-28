@@ -1,6 +1,8 @@
 <?php include('./datafield/server.php'); ?>
 <!-- <?php include('./datafield/bookserver.php'); ?> -->
-<?php include('./datafield/errors.php'); ?>
+<!-- <?php include('./datafield/errors.php'); ?> -->
+<!-- <?php include('./datafield/cancel.php'); ?> -->
+
 
 
 <!DOCTYPE html>
@@ -32,6 +34,7 @@ if($result = mysqli_fetch_array($findresult))
     <link rel="stylesheet" href="./node_modules/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
     <script src="./node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/css/multi-select-tag.css">
    
     <link rel="stylesheet" href="style.css">
     <style>
@@ -374,8 +377,7 @@ if($result = mysqli_fetch_array($findresult))
                         <input type="text" class="form-control" name="Pname" placeholder="Patient Name" required>
                     </div>
                     <div class="col-md-6">
-                        <select name="test"  class="form-select form-control" aria-label="Select Test" required>
-                            <option selected>Select Test</option>
+                        <select name="test" id="test"  class="form-select form-control" aria-label="Select Test" required multiple>
                             <option value="CT Scan">CT Scan</option>
                             <option value="MRI Scan">MRI Scan</option>
                             <option value="Blood Test">Blood Test</option>
@@ -423,24 +425,75 @@ if($result = mysqli_fetch_array($findresult))
                 </thead>
                 <tbody>
                 <?php
-                    $sql3="SELECT  * FROM bookappointment book,user user WHERE book.Email= user.Email";
-                    $result3=$mysqli->query($sql3);
-                    if(mysqli_num_rows($result3) >= 1){
-                        while ($row3=$result3->fetch_assoc()) {
+
+                    // $userprofile =isset($_SESSION['Name']);
+                    // $query = "SELECT * FROM user WHERE Name=('$userprofile')";
+
+                    $user = isset($_SESSION['Email']);
+                    $sql3="SELECT *
+        FROM `bookAppointment` AS book
+        JOIN `user` AS us
+        ON book.Email = us.Email
+        WHERE book.Email = '$user'";
+                    // $sql3="SELECT  * FROM `bookAppointment` book,user us WHERE book.Email= us.Email";
+                    $result = mysqli_query($mysqli, $sql3);
+                    if($result){
+                        while($row = mysqli_fetch_assoc($result)){
+                            $id=$row['AppoID'];
+                            $pname = $row['Pname'];
+                            $contact = $row['ContactNo'];
+                            $email = $row['Email'];
+                            $status = $row['Status'];
+                            $test = $row['Test'];
+                            $date = $row['Date'];
+                            $Address = $row['Address'];
 
                             echo "<tr>";
-                            echo "<td>{$row3["AppoID"]}</td>";
-                            echo "<td>{$row3["Pname"]}</td>";
-                            echo "<td>{$row3["Date"]}</td>";
-                            echo "<td>{$row3["Test"]}</td>";
-                            echo "<td>{$row3["Status"]}</td>";
-                            echo "<td><button class='btn btn-warning' name='cancel'>Cancel</button></td>";
+                            echo "<th scope='row'>$id</th>";
+                            echo "<td>$pname</td>";
+                            echo "<td>$date</td>";
+                            echo "<td>$test</td>";
+                            echo "<td>$status</td>";
+                            echo "<td><button class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#cancelModal' name='cancel'>Cancel</button></td>";
                             echo "</tr>";
 
+                            echo '<div class="modal" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="cancelModalLabel">Cancel Appointment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                       <p> Are you sure you want to cancel this appointment?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger "><a href="./datafield/cancel.php?cancelid='.$id.' " class="text-decoration-none text-light">Confirm Cancel</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>';
 
-                            // echo "<tr><td>".$row3["AppoID"]."</td><td>".$row3['Pname']."</td><td>".$row3["Date"]."</td><td>".$row3["Test"]."</td><td>".$row3['Address']."</td><td>".$row3['ContactNo']."</td><td>".$row3['Email']."</td><td><button class="btn cancel-btn" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel</button></td></tr>";
                         }
                     }
+                    // $result3=$mysqli->query($sql3);
+                    // if(mysqli_num_rows($result3) >= 1){
+                    //     while ($row3=$result3->fetch_assoc()) {
+
+                    //         echo "<tr>";
+                    //         echo "<td>{$row3["AppoID"]}</td>";
+                    //         echo "<td>{$row3["Pname"]}</td>";
+                    //         echo "<td>{$row3["Date"]}</td>";
+                    //         echo "<td>{$row3["Test"]}</td>";
+                    //         echo "<td>{$row3["Status"]}</td>";
+                    //         echo "<td><button class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#cancelModal' name='cancel'>Cancel</button></td>";
+                    //         echo "</tr>";
+
+
+                    //         // echo "<tr><td>".$row3["AppoID"]."</td><td>".$row3['Pname']."</td><td>".$row3["Date"]."</td><td>".$row3["Test"]."</td><td>".$row3['Address']."</td><td>".$row3['ContactNo']."</td><td>".$row3['Email']."</td><td><button class="btn cancel-btn" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel</button></td></tr>";
+                    //     }
+                    // }
                 
                 ?>
                 </tbody>
@@ -458,10 +511,11 @@ if($result = mysqli_fetch_array($findresult))
                     </div>
                     <div class="modal-body">
                        <p> Are you sure you want to cancel this appointment?</p>
+                       <input type="text" >
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" name="cancel" class="btn btn-danger">Confirm Cancel</button>
+                        <button type="button" class="btn btn-danger"><a href=""></a></button>
                     </div>
                 </div>
             </div>
@@ -559,7 +613,11 @@ if (isset($_POST['treatmentHistory'])) {
     
 
 </body>
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@3.1.0/dist/js/multi-select-tag.js"></script>
 <script>
+
+    new MultiSelectTag('test');
+
     $(document).ready(function(){
     var date = new Date();
     var tdate = date.getDate();
