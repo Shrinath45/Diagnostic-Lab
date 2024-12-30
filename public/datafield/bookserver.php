@@ -22,10 +22,12 @@ if (isset($_POST['Book'])) {
 
 	$Pname = 	$mysqli->real_escape_string($_POST['Pname']);
 	$Date 	=	 $mysqli->real_escape_string($_POST['Date']);
-	$Test 	= 	$mysqli->real_escape_string($_POST['test']);
+	$Time 	=	 $mysqli->real_escape_string($_POST['Time']);
+	$Email 	=	 $mysqli->real_escape_string($_POST['Email']);
+	$Test 	= 	$mysqli->real_escape_string(serialize($_POST['test']));
 	$Address 	= 	$mysqli->real_escape_string($_POST['Address']);
 	$Contact 	= 	$mysqli->real_escape_string($_POST['Contact']);
-	$Email 	= 	$mysqli->real_escape_string($_POST['Email']);
+	$userid 	= 	$mysqli->real_escape_string($_POST['userid']);
 
 	extract($_POST);
 	// if (empty($AppoID)) {
@@ -57,12 +59,12 @@ if (isset($_POST['Book'])) {
 		# code...
 	}
 
-	if (empty($Email)) {
-		array_push($errors, "Email Id is required");
-		# code...
-	}
+	// if (empty($Email)) {
+	// 	array_push($errors, "Email Id is required");
+	// 	# code...
+	// }
 
-	$sql4567 = "SELECT * FROM `bookappointment` WHERE Date='$Date'";
+	$sql4567 = "SELECT * FROM `bookappointment` WHERE Date='$Date'AND Time='$Time'";
 	$result = mysqli_query($mysqli, $sql4567);
 
 	if(mysqli_num_rows($result) == 1){
@@ -76,7 +78,7 @@ if (isset($_POST['Book'])) {
 
 	if (count($errors) == 0) {
 
-		$sql = "INSERT INTO `bookappointment` (`Pname`, `Date`, `Test`, `Address`, `ContactNo`, `Email`) VALUES ('$Pname','$Date','$Test','$Address','$Contact','$Email') ";
+		$sql = "INSERT INTO `bookappointment` (`Pname`, `Date`,`Time`, `Test`, `Address`, `ContactNo`, `userid2`, `Email`) VALUES ('$Pname','$Date', '$Time', '$Test','$Address','$Contact','$userid', '$Email') ";
 
 		if ($mysqli->query($sql)) {
 			$done = 45;
@@ -150,7 +152,7 @@ if (isset($_POST['Book1'])) {
 
 	if (count($errors) == 0) {
 
-		$sql = "INSERT INTO `bookappointment` (`AppoID`, `Pname`, `Date`, `Test`, `Address`, `ContactNo`) VALUES ('$AppoID','$Pname','$Date','$Test','$Address','$Contact') ";
+		$sql = "INSERT INTO `bookappointment` (`AppoID`, `Pname`, `Date`, `Test`, `Address`, `ContactNo`, `userid2`) VALUES ('$AppoID','$Pname','$Date','$Test','$Address','$Contact') ";
 
 		if ($mysqli->query($sql)) { ?>
 		    <h2 class="thanks"> <?php printf("Appointment Booked Successfully.");?></h2>

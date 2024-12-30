@@ -1,4 +1,6 @@
-<?php include('./datafield/server.php'); ?>
+<?php include('./datafield/server.php'); 
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,8 +47,8 @@
 
     <h1 class="header text-center">User Registration</h1>
 		<dl>
-			<dt class="mt-3">Username</dt>
-			<dd><input type="text" name="userName" class="form-control" value="<?php if(isset($error)) { echo $userName;}  ?>" required ></dd>
+			<!-- <dt class="mt-3">Username</dt>
+			<dd><input type="text" name="userName" class="form-control" value="<?php if(isset($error)) { echo $userName;}  ?>" required ></dd> -->
             <dt class="mt-3">Full Name</dt>
             <dd><input type="text" name="Name" class="form-control" value="<?php if(isset($error)) { echo $Name;}  ?>" required ></dd>
             <dt class="mt-3">Address</dt>

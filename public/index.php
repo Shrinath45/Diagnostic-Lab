@@ -1,7 +1,7 @@
 <?php include('./datafield/server.php'); ?>
-<!-- <?php include('./datafield/bookserver.php'); ?> -->
-<!-- <?php include('./datafield/errors.php'); ?> -->
-<!-- <?php include('./datafield/cancel.php'); ?> -->
+<!-- <?php include('./datafield/bookserver.php'); ?> 
+<?php include('./datafield/errors.php'); ?>
+<?php include('./datafield/cancel.php'); ?> -->
 
 
 
@@ -13,11 +13,11 @@ if(!isset($_SESSION['login_sess']))
 {
 	header("location: ../../loginfield/Ulogin.php");
 }
-$Name =$_SESSION['login_Name'];
-$findresult = mysqli_query($mysqli, "SELECT * FROM `user` WHERE Name=('$Name')");
+$userid =$_SESSION['userid'];
+$findresult = mysqli_query($mysqli, "SELECT * FROM `user` WHERE userid=('$userid')");
 if($result = mysqli_fetch_array($findresult))
 {
-	$userName = $result['userName'];
+	// $userName = $result['userName'];
 	$Name = $result['Name'];
 	$Address = $result['Address'];
 	$ContactNumber = $result['ContactNumber'];
@@ -361,7 +361,7 @@ if($result = mysqli_fetch_array($findresult))
 
 
     <section id="home">
-     <h1>Welcome Back <?php echo $result['userName']; ?>!</h1>
+     <h1>Welcome Back <?php echo $result['Email']; ?>!</h1>
 
     </section>
 
@@ -377,7 +377,7 @@ if($result = mysqli_fetch_array($findresult))
                         <input type="text" class="form-control" name="Pname" placeholder="Patient Name" required>
                     </div>
                     <div class="col-md-6">
-                        <select name="test" id="test"  class="form-select form-control" aria-label="Select Test" required multiple>
+                        <select name="test[]" id="test"  class="form-select form-control" aria-label="Select Test" required multiple>
                             <option value="CT Scan">CT Scan</option>
                             <option value="MRI Scan">MRI Scan</option>
                             <option value="Blood Test">Blood Test</option>
@@ -390,7 +390,7 @@ if($result = mysqli_fetch_array($findresult))
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="email" value="<?php echo $result['Email']; ?>" name="Email" class="form-control" placeholder="Email" required>
+                        <input type="text" value="<?php echo $result['userid']; ?>" name="userid" class="form-control" placeholder="Email" required>
                     </div>
                     <div class="col-md-6">
                         <input type="text" name="Address" class="form-control" placeholder="Address" required>
@@ -398,16 +398,107 @@ if($result = mysqli_fetch_array($findresult))
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <input type="datetime-local" name="Date" class="form-control" placeholder="Date & Time" required>
+                        <input type="date" name="Date" id="date" class="form-control" placeholder="Date & Time" required>
                     </div>
                     <div class="col-md-6">
-                        <input type="tel" class="form-control" name="Contact" placeholder="Contact Number" required>
+                        <input type="number" min="10" max="18" step="1" name="Time" class="form-control" name="Contact" placeholder="Time(Between 10AM & 6PM" required>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="email" name="Email" class="form-control" value="<?php echo $result['Email']; ?>" required>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" name="Contact" placeholder="Contact Number" required>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-book mt-4" name="Book">Book</button>
             </form>
         </div>
     </section>
+
+
+    <section id="view">
+    <div class="appointment-section">
+        <h1 class="text-center">My <span>Appointments</span></h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Appointment ID</th>
+                    <th>Patient Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Test</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                session_start();
+                $user = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
+
+                if (!$user) {
+                    echo "<p>Please log in to view your appointments.</p>";
+                    exit;
+                }
+
+                $sql3 = "SELECT * FROM `bookappointment` AS book 
+                         JOIN `user` AS us 
+                         ON book.userid2 = us.userid 
+                         WHERE book.userid2 = '$user'";
+                $result = mysqli_query($mysqli, $sql3);
+
+                if ($result) {
+                    while ($row = mysqli_fetch_assoc($result)) {
+                        $id = $row['AppoID'];
+                        $pname = $row['Pname'];
+                        $contact = $row['ContactNo'];
+                        $userid = $row['userid2'];
+                        $status = $row['Status'] ? $row['Status'] : 'Pending';
+                        $testArray = unserialize($row['Test']);
+                        $test = is_array($testArray) ? implode(", ", $testArray) : 'Not Specified';
+                        $date = $row['Date'];
+                        $time = $row['Time'] ? $row['Time'] : 'Not Set';
+
+                        echo "<tr>";
+                        echo "<th scope='row'>$id</th>";
+                        echo "<td>$pname</td>";
+                        echo "<td>$date</td>";
+                        echo "<td>$time</td>";
+                        echo "<td>$test</td>";
+                        echo "<td>$status</td>";
+                        echo "<td><button class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#cancelModal$id' name='cancel'>Cancel</button></td>";
+                        echo "</tr>";
+
+                        echo '<div class="modal" id="cancelModal' . $id . '" tabindex="-1" aria-labelledby="cancelModalLabel' . $id . '" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="cancelModalLabel' . $id . '">Cancel Appointment</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <p>Are you sure you want to cancel this appointment?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-danger"><a href="./datafield/cancel.php?cancelid=' . $id . '" class="text-decoration-none text-light">Confirm Cancel</a></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>';
+                    }
+                } else {
+                    echo "<tr><td colspan='7'>No appointments found.</td></tr>";
+                }
+                ?>
+            </tbody>
+        </table>
+    </div>
+</section>
+
 
     <section id="view">
         <div class="appointment-section">
@@ -417,7 +508,8 @@ if($result = mysqli_fetch_array($findresult))
                     <tr>
                         <th>Appointment ID</th>
                         <th>Patient Name</th>
-                        <th>Date & Time</th>
+                        <th>Date</th>
+                        <th>Time</th>
                         <th>Test</th>
                         <th>Status</th>
                         <th>Action</th>
@@ -429,12 +521,8 @@ if($result = mysqli_fetch_array($findresult))
                     // $userprofile =isset($_SESSION['Name']);
                     // $query = "SELECT * FROM user WHERE Name=('$userprofile')";
 
-                    $user = isset($_SESSION['Email']);
-                    $sql3="SELECT *
-        FROM `bookAppointment` AS book
-        JOIN `user` AS us
-        ON book.Email = us.Email
-        WHERE book.Email = '$user'";
+                    $user = isset($_SESSION['userid']) ? $_SESSION['userid']:null;
+                    $sql3="SELECT * FROM `bookappointment` AS book JOIN `user` AS us ON book.userid2 = us.userid WHERE book.userid2 = '$user'";
                     // $sql3="SELECT  * FROM `bookAppointment` book,user us WHERE book.Email= us.Email";
                     $result = mysqli_query($mysqli, $sql3);
                     if($result){
@@ -442,16 +530,18 @@ if($result = mysqli_fetch_array($findresult))
                             $id=$row['AppoID'];
                             $pname = $row['Pname'];
                             $contact = $row['ContactNo'];
-                            $email = $row['Email'];
+                            $userid = $row['userid2'];
                             $status = $row['Status'];
-                            $test = $row['Test'];
+                            $test = unserialize($row['Test']);
                             $date = $row['Date'];
+                            $time = $row['Time'];
                             $Address = $row['Address'];
 
                             echo "<tr>";
                             echo "<th scope='row'>$id</th>";
                             echo "<td>$pname</td>";
                             echo "<td>$date</td>";
+                            echo "<td>$time</td>";
                             echo "<td>$test</td>";
                             echo "<td>$status</td>";
                             echo "<td><button class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#cancelModal' name='cancel'>Cancel</button></td>";
@@ -648,5 +738,11 @@ if (isset($_POST['treatmentHistory'])) {
     function treat(){
         document.getElementById("history").className.remove = "d-none";
     }
+
+
+
+    // Date Validation
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById("date").setAttribute("min", today);
 </script>
 </html>

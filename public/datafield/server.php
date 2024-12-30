@@ -1,6 +1,5 @@
 <?php
 
-
 session_start();
 $errors = array();
 
@@ -18,7 +17,7 @@ if (isset($_POST['Register'])) {
 
 
 
-	$userName	= $mysqli->real_escape_string($_POST['userName']);
+	// $userName	= $mysqli->real_escape_string($_POST['userN']);
 	$Name 	= $mysqli->real_escape_string($_POST['Name']);
 	$Address 	= $mysqli->real_escape_string($_POST['Address']);
 	$ContactNumber	 = $mysqli->real_escape_string($_POST['ContactNumber']);
@@ -27,17 +26,17 @@ if (isset($_POST['Register'])) {
 
 
     extract($_POST);
-	if(strlen($userName)<3){
-		$errors[]= ' Please Enter your userName';
-	}
+	// if(strlen($userName)<3){
+	// 	$errors[]= ' Please Enter your userName';
+	// }
 
-	if(strlen($userName)>20){
-		$errors[]= ' Max length of userName 20 characters not allowed';
-	}
-	if(!preg_match("/^^[^0-9][a-z0-9]+([_-]?[a-z0-9])*$/", $userName))
-	{
-		$errors[]= 'Invalid userName. Enter lowercase letters without any space and no number at the start.';
-	}
+	// if(strlen($userName)>20){
+	// 	$errors[]= ' Max length of userName 20 characters not allowed';
+	// }
+	// if(!preg_match("/^^[^0-9][a-z0-9]+([_-]?[a-z0-9])*$/", $userName))
+	// {
+	// 	$errors[]= 'Invalid userName. Enter lowercase letters without any space and no number at the start.';
+	// }
 
 
 	if(strlen($Name)<5){
@@ -75,15 +74,15 @@ if (isset($_POST['Register'])) {
 		$errors[]= ' Password max length 20 characters not allowed.';
 	}
 
-	$sql4567 = "SELECT * FROM `user` WHERE (userName='$userName' or Email='$Email' or Name='$Name')";
+	$sql4567 = "SELECT * FROM `user` WHERE (Email='$Email' or Name='$Name')";
 	$result = mysqli_query($mysqli, $sql4567);
 
 	if(mysqli_num_rows($result) > 0){
 		$row = mysqli_fetch_assoc($result);
 
-		if($userName==$row['userName']){
-			$errors[] = 'Username already exists.';
-		}
+		// if($userName==$row['userName']){
+		// 	$errors[] = 'Username already exists.';
+		// }
 		if($Email==$row['Email']){
 			$errors[] = 'Email already exists.';
 		}
@@ -91,10 +90,7 @@ if (isset($_POST['Register'])) {
 
 	if (count($errors) == 0) {
 
-
-		$Password = md5($Password);
-
-		$sql = "INSERT INTO `user` (`userName`, `Name`, `Address`, `ContactNumber`, `Email`, `Password`) VALUES ('$userName','$Name','$Address','$ContactNumber','$Email','$Password')";
+		$sql = "INSERT INTO `user` (`Name`, `Address`, `ContactNumber`, `Email`, `Password`) VALUES ('$Name','$Address','$ContactNumber','$Email','$Password')";
 
 
 
@@ -115,44 +111,80 @@ if (isset($_POST['Register'])) {
 
 //////////  USER LOGIN /////////
 
-
 if (isset($_POST['Login'])) {
 
-	$userEmail 	= $mysqli->real_escape_string($_POST['userEmail']);
-	$Password 	= $mysqli->real_escape_string($_POST['password']);
-	if (empty($userEmail)) {
-		array_push($errors, "userName is required");
-		# code...
-	}
-	if (empty($Password)) {
-		array_push($errors, "Password is required");
+    $userEmail = $mysqli->real_escape_string($_POST['userEmail']);
+    $Password = $mysqli->real_escape_string($_POST['password']);
+    if (empty($userEmail)) {
+        array_push($errors, "User ID or Email is required");
+    }
+    if (empty($Password)) {
+        array_push($errors, "Password is required");
+    }
 
+    if (count($errors) == 0) {
+        $Password = md5($Password); // Assuming you're using MD5 for password hashing.
 
-		# code...
-	}
+        $query = "SELECT * FROM `user` WHERE (userid='$userEmail' OR Email='$userEmail') AND Password='$Password'";
+        $result = mysqli_query($mysqli, $query);
+        $numRows = mysqli_num_rows($result);
 
-
-	if (count($errors) == 0) {
-
-		$Password = md5($Password);
-
-
-
-		$query = "SELECT * FROM `user` WHERE userName=('$userEmail') OR Email=('$userEmail') AND Password=('$Password')";
-		$result = mysqli_query($mysqli, $query);
-		$numRows = mysqli_num_rows($result);
-		if ($numRows == 1) {
-
+        if ($numRows == 1) {
             $row = mysqli_fetch_assoc($result);
-			$_SESSION['login_sess']="1";
-			$_SESSION['login_Name']=$row['Name'];
-			header('location:./index.php');
-          
-		} else{
-            header("location: Ulogin.php?loginerror=".$userEmail);
+
+            // // Store relevant user details in the session.
+            // $_SESSION['login_sess'] = "1";
+            // $_SESSION['userid'] = $row['userid']; // Add the userid to the session.
+            // $_SESSION['login_Name'] = $row['Name'];
+
+            // Redirect to the index or dashboard page after login.
+            header('location: ./index.php');
+        } else {
+            header("location: Ulogin.php?loginerror=" . $userEmail);
         }
-	}
+    }
 }
+
+
+
+
+// if (isset($_POST['Login'])) {
+
+// 	$userid 	= $mysqli->real_escape_string($_POST['userEmail']);
+// 	$Password 	= $mysqli->real_escape_string($_POST['password']);
+// 	if (empty($userEmail)) {
+// 		array_push($errors, "userid or Email is required");
+// 		# code...
+// 	}
+// 	if (empty($Password)) {
+// 		array_push($errors, "Password is required");
+
+
+// 		# code...
+// 	}
+
+
+// 	if (count($errors) == 0) {
+
+// 		$Password = md5($Password);
+
+
+
+// 		$query = "SELECT * FROM `user` WHERE userid=('$userid') OR Email=('$userEmail') AND Password=('$Password')";
+// 		$result = mysqli_query($mysqli, $query);
+// 		$numRows = mysqli_num_rows($result);
+// 		if ($numRows == 1) {
+
+//             $row = mysqli_fetch_assoc($result);
+// 			$_SESSION['login_sess']="1";
+// 			$_SESSION['login_Name']=$row['Name'];
+// 			header('location:./index.php');
+          
+// 		} else{
+//             header("location: Ulogin.php?loginerror=".$userEmail);
+//         }
+// 	}
+// }
 
 
 # code...
@@ -161,7 +193,7 @@ if (isset($_POST['Login'])) {
 if (isset($_GET['logout'])) {
 
 	session_destroy();
-	usset($_SESSION['userName']);
+	usset($_SESSION['userid']);
 	header('location:../public/ulogin.php');
 }
 
@@ -322,43 +354,69 @@ if (count($errors) == 0) {
 
 
 
-if (isset($_POST['Book'])) {
+// if (isset($_POST['Book'])) {
 
-	$Pname = 	$mysqli->real_escape_string($_POST['Pname']);
-	$Date 	=	 $mysqli->real_escape_string($_POST['Date']);
-	$Test 	= 	$mysqli->real_escape_string($_POST['test']);
-	$Address 	= 	$mysqli->real_escape_string($_POST['Address']);
-	$Contact 	= 	$mysqli->real_escape_string($_POST['Contact']);
-	$Email 	= 	$mysqli->real_escape_string($_POST['Email']);
+// 	$Pname = 	$mysqli->real_escape_string($_POST['Pname']);
+// 	$Date 	=	 $mysqli->real_escape_string($_POST['Date']);
+// 	$Time 	=	 $mysqli->real_escape_string($_POST['Time']);
+// 	$Test 	= 	$_POST['test'];
+// 	$Address 	= 	$mysqli->real_escape_string($_POST['Address']);
+// 	$Contact 	= 	$mysqli->real_escape_string($_POST['Contact']);
+// 	$Email 	= 	$mysqli->real_escape_string($_POST['Email']);
 
-	extract($_POST);
-	$sql4567 = "SELECT * FROM `bookappointment` WHERE Date='$Date'";
-	$result = mysqli_query($mysqli, $sql4567);
-
-	if(mysqli_num_rows($result) == 1){
-		$row = mysqli_fetch_assoc($result);
-
-		if($Date == $row['Date']){
-			echo 'Date & Time is already booked.';
-		}
-	}
+// 	extract($_POST);
 
 
-	if (count($errors) == 0) {
+// 	if (count($errors) == 0) {
 
-		$sql = "INSERT INTO `bookappointment` (`Pname`, `Date`, `Test`, `Address`, `ContactNo`, `Email`) VALUES ('$Pname','$Date','$Test','$Address','$Contact','$Email') ";
+// 		$sql = "INSERT INTO `bookappointment` (`Pname`, `Date`, `Time`, `Test`, `Address`, `ContactNo`, `Email`) VALUES ('$Pname','$Date', '$Time', '$Test','$Address','$Contact','$Email') ";
 
-		if ($mysqli->query($sql)) {
-			$done = 45;
+// 		if ($mysqli->query($sql)) {
+// 			$done = 45;
 			
-		} elseif (!$mysqli->query($sql)) {
-			printf("%d Can't Book At The Moment.\n", $mysqli->affected_rows);
-		}
-		$_SESSION['AppoID'] = $AppoID;
-		$_SESSION['success'] = "you are now logged in";
-		header('location:../public/index.php');
-	}
+// 		} elseif (!$mysqli->query($sql)) {
+// 			printf("%d Can't Book At The Moment.\n", $mysqli->affected_rows);
+// 		}
+// 		$_SESSION['AppoID'] = $AppoID;
+// 		$_SESSION['success'] = "you are now logged in";
+// 		header('location:../public/index.php');
+// 	}
+// }
+
+if (isset($_POST['Book'])) {
+    $Pname = $mysqli->real_escape_string($_POST['Pname']);
+    $Date = $mysqli->real_escape_string($_POST['Date']);
+    $Time = $mysqli->real_escape_string($_POST['Time']);
+    $Test = $_POST['test'];
+    $Address = $mysqli->real_escape_string($_POST['Address']);
+    $Contact = $mysqli->real_escape_string($_POST['Contact']);
+    $Email = $mysqli->real_escape_string($_POST['Email']);
+
+    // Check for duplicate appointments
+    $sql_check = "SELECT * FROM `bookappointment` WHERE `Date` = '$Date' AND `Time` = '$Time' AND `Pname` = '$Pname'";
+    $result_check = $mysqli->query($sql_check);
+
+    if ($result_check->num_rows > 0) {
+        echo "<h2 class='thanks'>This appointment is already booked.</h2>";
+        exit; // Stop further execution
+    }
+
+    // Insert appointment using prepared statement
+    $stmt = $mysqli->prepare("INSERT INTO `bookappointment` (`Pname`, `Date`, `Time`, `Test`, `Address`, `ContactNo`, `Email`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("sssssss", $Pname, $Date, $Time, $Test, $Address, $Contact, $Email);
+
+    if ($stmt->execute()) {
+        echo "<h2 class='thanks'>Appointment Booked Successfully.</h2>";
+        $_SESSION['success'] = "You are now logged in";
+        header('location:../public/index.php');
+        exit;
+    } else {
+        echo "<h2 class='error'>Error: Could not book the appointment.</h2>";
+    }
+
+    $stmt->close();
 }
+
 
 
 if (isset($_POST['Book1'])) {
@@ -400,31 +458,13 @@ if (isset($_POST['Book1'])) {
 		array_push($errors, "Contact No. is required");
 	}
 
-
-	$sql4567 = "SELECT * FROM `bookappointment` WHERE Date=('$Date')";
-	$result = mysqli_query($mysqli, $sql4567);
-
-	if(mysqli_num_rows($result) == 1){
-		$row = mysqli_fetch_assoc($result);
-
-		if($Date==$row['Date']){ ?>
-		<h2 class="thanks"> <?php printf("Date is Already booked.");?></h2>
-			
-			<?php
-		}
-	}
-
-
-
-
-
 	if (count($errors) == 0) {
 
 		$sql = "INSERT INTO `bookappointment` (`AppoID`, `Pname`, `Date`, `Test`, `Address`, `ContactNo`) VALUES ('$AppoID','$Pname','$Date','$Test','$Address','$Contact') ";
 
 		if ($mysqli->query($sql)) { ?>
 		    <h2 class="thanks"> <?php printf("Appointment Booked Successfully.");?></h2>
-			$done=45;
+			<!-- $done=45; -->
 			<?php
 		} elseif (!$mysqli->query($sql)) {
 			printf("%d Can't Book At The Moment.\n", $mysqli->affected_rows);
