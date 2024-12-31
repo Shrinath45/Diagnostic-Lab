@@ -8,18 +8,18 @@
 $mysqli = new mysqli("localhost", "root", "", "shri");
 if(!isset($_SESSION['login_sess']))
 {
-	header("location: ../../loginfield/Ulogin.php");
+	header("location: ./ulogin.php");
 }
 $Name =$_SESSION['login_Name'];
 $findresult = mysqli_query($mysqli, "SELECT * FROM `user` WHERE Name=('$Name')");
 if($result = mysqli_fetch_array($findresult))
 {
-	$userName = $result['userName'];
+	$userid = $result['userid'];
 	$Name = $result['Name'];
 	$Address = $result['Address'];
 	$ContactNumber = $result['ContactNumber'];
 	$Email = $result['Email'];
-    $olduserName = $result['userName'];
+    $olduserid = $result['userid'];
 }
 ?>
 
@@ -143,7 +143,7 @@ if($result = mysqli_fetch_array($findresult))
     {
 
 		
-		$userName = $mysqli->real_escape_string($_POST['userName']);	
+		$userid = $mysqli->real_escape_string($_POST['userid']);	
 		$Email = $mysqli->real_escape_string($_POST['Email']);
 		$Address = $mysqli->real_escape_string($_POST['Address']);
 		$ContactNumber = $mysqli->real_escape_string($_POST['ContactNumber']);
@@ -154,18 +154,18 @@ if($result = mysqli_fetch_array($findresult))
         // // $Address = $_POST['Address'];
         // // $ContactNumber = $_POST['ContactNumber'];
 
-		$spm = "SELECT * FROM `user` WHERE userName='$userName'";
+		$spm = "SELECT * FROM `user` WHERE userid='$userid'";
 		$res = mysqli_query($mysqli, $spm);
 		if(mysqli_num_rows($res) > 0){
 			$row = mysqli_fetch_assoc($res);
 	
-			if($olduserName != $userName){
-				if($userName==$row['userName']){
-					$errors[] = 'Username already exist. Create unique username.';
+			if($olduserid != $userid){
+				if($userid==$row['userid']){
+					$errors[] = 'Userid already exist. Create unique username.';
 				}
 			}
 		}
-		$resultS = "UPDATE `user` SET userName='$userName', Email='$Email', Address='$Address', ContactNumber='$ContactNumber' WHERE Name='$Name'";
+		$resultS = "UPDATE `user` SET Email='$Email', Address='$Address', ContactNumber='$ContactNumber' WHERE Name='$Name'";
 		// $resultS = mysqli_query($mysqli, "UPDATE `user` SET userName='$userName', Name='$Name', ContactNumber='$ContactNumber' WHERE Email='$Email'");
 		$result45 = mysqli_query($mysqli,$resultS);
 		if($result45){
@@ -224,7 +224,7 @@ if($result = mysqli_fetch_array($findresult))
                 <div class="row">
                     <div class="col-md-6 d-flex flex-column">
                         <label class="fw-bold fs-5 mt-3">Username:</label>
-                        <label class="mt-3"><input type="text" name="userName" value="<?php echo $result['userName']; ?>"></label>
+                        <label class="mt-3"><?php echo $result['userid']; ?></label>
                     </div>
 
                     <div class="col-md-6 d-flex flex-column">

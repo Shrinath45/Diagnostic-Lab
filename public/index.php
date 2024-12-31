@@ -17,7 +17,7 @@ $userid =$_SESSION['userid'];
 $findresult = mysqli_query($mysqli, "SELECT * FROM `user` WHERE userid=('$userid')");
 if($result = mysqli_fetch_array($findresult))
 {
-	// $userName = $result['userName'];
+	$userid = $result['userid'];
 	$Name = $result['Name'];
 	$Address = $result['Address'];
 	$ContactNumber = $result['ContactNumber'];
@@ -436,7 +436,7 @@ if($result = mysqli_fetch_array($findresult))
             </thead>
             <tbody>
                 <?php
-                session_start();
+                // session_start();
                 $user = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
                 if (!$user) {

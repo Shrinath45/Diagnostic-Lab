@@ -58,10 +58,7 @@ if (isset($_POST['Register'])) {
 	if(strlen($ContactNumber)>10){
 		$errors[]= ' Contact Number should be 10 Digit.';
 	}
-	if(!preg_match("/^[0-9]*$/", $ContactNumber))
-	{
-		$errors[]= 'Invalid Contact Number. please enter Digits without any letter or Special Symbol.';
-	}
+	
 
 	if(strlen($Email)>40){
 		$errors[]= ' Email max length 40 characters not allowed.';
@@ -123,7 +120,7 @@ if (isset($_POST['Login'])) {
     }
 
     if (count($errors) == 0) {
-        $Password = md5($Password); // Assuming you're using MD5 for password hashing.
+        // $Password = md5($Password); // Assuming you're using MD5 for password hashing.
 
         $query = "SELECT * FROM `user` WHERE (userid='$userEmail' OR Email='$userEmail') AND Password='$Password'";
         $result = mysqli_query($mysqli, $query);
@@ -132,15 +129,15 @@ if (isset($_POST['Login'])) {
         if ($numRows == 1) {
             $row = mysqli_fetch_assoc($result);
 
-            // // Store relevant user details in the session.
-            // $_SESSION['login_sess'] = "1";
-            // $_SESSION['userid'] = $row['userid']; // Add the userid to the session.
-            // $_SESSION['login_Name'] = $row['Name'];
+            // Store relevant user details in the session.
+            $_SESSION['login_sess'] = "1";
+            $_SESSION['userid'] = $row['userid']; // Add the userid to the session.
+            $_SESSION['login_Name'] = $row['Name'];
 
             // Redirect to the index or dashboard page after login.
             header('location: ./index.php');
         } else {
-            header("location: Ulogin.php?loginerror=" . $userEmail);
+            header("location: ulogin.php?loginerror=" . $userEmail);
         }
     }
 }
@@ -291,7 +288,7 @@ if (isset($_GET['logout'])) {
 
 				$_SESSION['AdminID'] = $adminID;
 				$_SESSION['success'] = "you are now logged in";
-				header('location:../presentaionfield/admin/home.php');
+				header('location:./home.php');
 			} else {
 				array_push($errors, "The ID/Password not correct");
 			}
@@ -615,5 +612,22 @@ if (isset($_POST['Delete'])) {
 
 
 
+
+
+
+// Code To Update the Status of the Appointment
+
+if(isset($_POST['update'])){
+    $id=$_POST['appoid'];
+    $up=$_POST['ustatus'];
+
+    $sql = "UPDATE `bookAppointment` SET Status='$up' WHERE AppoID ='$id' ";
+    $result = mysqli_query($mysqli, $sql);
+    if($result){
+        header('location: ../viewappointments.php');
+    }else{
+        echo 'Cannot Update ';
+    }
+}
 
 ?>

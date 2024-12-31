@@ -9,13 +9,13 @@
 $mysqli = new mysqli("localhost", "root", "", "shri");
 if(!isset($_SESSION['login_sess']))
 {
-	header("location: ../../loginfield/Ulogin.php");
+	header("location: ../ulogin.php");
 }
 $Name =$_SESSION['login_Name'];
 $findresult = mysqli_query($mysqli, "SELECT * FROM `user` WHERE Name=('$Name')");
 if($result = mysqli_fetch_array($findresult))
 {
-	$userName = $result['userName'];
+	$userid = $result['userid'];
 	$Name = $result['Name'];
 	$Address = $result['Address'];
 	$ContactNumber = $result['ContactNumber'];
@@ -176,8 +176,8 @@ if($result = mysqli_fetch_array($findresult))
             <form class="d-flex flex-column justify-content-center">
                 <div class="row">
                     <div class="col-md-6 d-flex flex-column">
-                        <label class="fw-bold fs-5 mt-3">Username:</label>
-                        <label class="mt-3"><?php echo $result['userName']; ?></label>
+                        <label class="fw-bold fs-5 mt-3">UserID:</label>
+                        <label class="mt-3"><?php echo $result['userid']; ?></label>
                     </div>
 
                     <div class="col-md-6 d-flex flex-column">
