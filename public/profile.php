@@ -11,8 +11,8 @@ if(!isset($_SESSION['login_sess']))
 {
 	header("location: ../ulogin.php");
 }
-$Name =$_SESSION['login_Name'];
-$findresult = mysqli_query($mysqli, "SELECT * FROM `user` WHERE Name=('$Name')");
+$userid =$_SESSION['userid'];
+$findresult = mysqli_query($mysqli, "SELECT * FROM `user` WHERE userid=('$userid')");
 if($result = mysqli_fetch_array($findresult))
 {
 	$userid = $result['userid'];

@@ -1,7 +1,5 @@
 <?php include('./datafield/server.php'); ?>
-<!-- <?php include('./datafield/bookserver.php'); ?> 
-<?php include('./datafield/errors.php'); ?>
-<?php include('./datafield/cancel.php'); ?> -->
+
 
 
 
@@ -362,6 +360,7 @@ if($result = mysqli_fetch_array($findresult))
 
     <section id="home">
      <h1>Welcome Back <?php echo $result['Email']; ?>!</h1>
+     <h2>Your User ID is <span class="text-danger"><?php echo $result['userid'];  ?>  </span></h2>
 
     </section>
 
@@ -401,7 +400,7 @@ if($result = mysqli_fetch_array($findresult))
                         <input type="date" name="Date" id="date" class="form-control" placeholder="Date & Time" required>
                     </div>
                     <div class="col-md-6">
-                        <input type="number" min="10" max="18" step="1" name="Time" class="form-control" name="Contact" placeholder="Time(Between 10AM & 6PM" required>
+                        <input type="time" min="10" max="18" step="1" name="Time" class="form-control" name="Contact" placeholder="Time(Between 10AM & 6PM" required>
                     </div>
                 </div>
 
@@ -436,18 +435,8 @@ if($result = mysqli_fetch_array($findresult))
             </thead>
             <tbody>
                 <?php
-                // session_start();
-                $user = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
-
-                if (!$user) {
-                    echo "<p>Please log in to view your appointments.</p>";
-                    exit;
-                }
-
-                $sql3 = "SELECT * FROM `bookappointment` AS book 
-                         JOIN `user` AS us 
-                         ON book.userid2 = us.userid 
-                         WHERE book.userid2 = '$user'";
+                
+                $sql3 = "SELECT * FROM `book` WHERE userid='$userid'";
                 $result = mysqli_query($mysqli, $sql3);
 
                 if ($result) {
@@ -455,7 +444,7 @@ if($result = mysqli_fetch_array($findresult))
                         $id = $row['AppoID'];
                         $pname = $row['Pname'];
                         $contact = $row['ContactNo'];
-                        $userid = $row['userid2'];
+                        $userid = $row['userid'];
                         $status = $row['Status'] ? $row['Status'] : 'Pending';
                         $testArray = unserialize($row['Test']);
                         $test = is_array($testArray) ? implode(", ", $testArray) : 'Not Specified';
@@ -500,118 +489,7 @@ if($result = mysqli_fetch_array($findresult))
 </section>
 
 
-    <section id="view">
-        <div class="appointment-section">
-            <h1 class="text-center">My <span>Appointments</span></h1>
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Appointment ID</th>
-                        <th>Patient Name</th>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Test</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                <?php
-
-                    // $userprofile =isset($_SESSION['Name']);
-                    // $query = "SELECT * FROM user WHERE Name=('$userprofile')";
-
-                    $user = isset($_SESSION['userid']) ? $_SESSION['userid']:null;
-                    $sql3="SELECT * FROM `bookappointment` AS book JOIN `user` AS us ON book.userid2 = us.userid WHERE book.userid2 = '$user'";
-                    // $sql3="SELECT  * FROM `bookAppointment` book,user us WHERE book.Email= us.Email";
-                    $result = mysqli_query($mysqli, $sql3);
-                    if($result){
-                        while($row = mysqli_fetch_assoc($result)){
-                            $id=$row['AppoID'];
-                            $pname = $row['Pname'];
-                            $contact = $row['ContactNo'];
-                            $userid = $row['userid2'];
-                            $status = $row['Status'];
-                            $test = unserialize($row['Test']);
-                            $date = $row['Date'];
-                            $time = $row['Time'];
-                            $Address = $row['Address'];
-
-                            echo "<tr>";
-                            echo "<th scope='row'>$id</th>";
-                            echo "<td>$pname</td>";
-                            echo "<td>$date</td>";
-                            echo "<td>$time</td>";
-                            echo "<td>$test</td>";
-                            echo "<td>$status</td>";
-                            echo "<td><button class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#cancelModal' name='cancel'>Cancel</button></td>";
-                            echo "</tr>";
-
-                            echo '<div class="modal" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="cancelModalLabel">Cancel Appointment</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                       <p> Are you sure you want to cancel this appointment?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger "><a href="./datafield/cancel.php?cancelid='.$id.' " class="text-decoration-none text-light">Confirm Cancel</a></button>
-                    </div>
-                </div>
-            </div>
-        </div>';
-
-                        }
-                    }
-                    // $result3=$mysqli->query($sql3);
-                    // if(mysqli_num_rows($result3) >= 1){
-                    //     while ($row3=$result3->fetch_assoc()) {
-
-                    //         echo "<tr>";
-                    //         echo "<td>{$row3["AppoID"]}</td>";
-                    //         echo "<td>{$row3["Pname"]}</td>";
-                    //         echo "<td>{$row3["Date"]}</td>";
-                    //         echo "<td>{$row3["Test"]}</td>";
-                    //         echo "<td>{$row3["Status"]}</td>";
-                    //         echo "<td><button class='btn btn-warning' data-bs-toggle='modal' data-bs-target='#cancelModal' name='cancel'>Cancel</button></td>";
-                    //         echo "</tr>";
-
-
-                    //         // echo "<tr><td>".$row3["AppoID"]."</td><td>".$row3['Pname']."</td><td>".$row3["Date"]."</td><td>".$row3["Test"]."</td><td>".$row3['Address']."</td><td>".$row3['ContactNo']."</td><td>".$row3['Email']."</td><td><button class="btn cancel-btn" data-bs-toggle="modal" data-bs-target="#cancelModal">Cancel</button></td></tr>";
-                    //     }
-                    // }
-                
-                ?>
-                </tbody>
-            </table>
-        </div>
-
-        
-        <!-- Cancel Confirmation Modal -->
-        <!-- <div class="modal" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="cancelModalLabel">Cancel Appointment</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                       <p> Are you sure you want to cancel this appointment?</p>
-                       <input type="text" >
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-danger"><a href=""></a></button>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-    </section>
-
+    
     <section id="others">
         <div class="col-5 tdiv">
             <h1 class="fw-bold fs-1">Treatment History</h1>
@@ -628,10 +506,10 @@ if($result = mysqli_fetch_array($findresult))
             <h1 class="fw-bold">Send Feedback</h1>
             <form action="" class="w-75 mt-2 tform p-5">
                 <dl>
-                    <dt><input type="text" class="form-control mt-2" placeholder="Appointment ID"></dt>
-                    <dt><input type="text" class="form-control mt-3" placeholder="Patient Name"></dt>
+                    <dt><input type="text" class="form-control mt-2" placeholder="Appointment ID" name="AppoID3"></dt>
+                    <dt><input type="text" class="form-control mt-3" placeholder="Patient Name" name="Pname3"></dt>
                     <dt><textarea name="" id="" class="form-control mt-3 h-25" rows="6" cols="6" placeholder="Write Something..."></textarea></dt>
-                    <dt><button class="btn btn-success mt-3 w-100">Send!</button></dt>
+                    <dt><button class="btn btn-success mt-3 w-100" name="sendfeedback">Send!</button></dt>
                 </dl>
             </form>
         </div>
@@ -659,7 +537,7 @@ if (isset($_POST['treatmentHistory'])) {
     <!-- Button Form to Show Treatment History -->
     <form method="post" action="">
         <input type="hidden" name="AppoID4" value="<?php echo isset($_POST['AppoID4']) ? $_POST['AppoID4'] : ''; ?>">
-        <button type="submit" name="show_treatment_history" style="padding: 5px; background-color: black; color: green;">
+        <button type="submit" name="treatmentHistory" style="padding: 5px; background-color: black; color: green;">
             View Test Result
         </button>
     </form>
