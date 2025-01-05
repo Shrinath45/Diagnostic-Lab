@@ -1,22 +1,67 @@
 <?php 
 	// include('../public/datafield/bookserver.php');
 	include('../public/datafield/server.php');
-	
  ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Admin</title>
-	<!-- <link rel="stylesheet"  href="style5.css"> -->
 	<link rel="stylesheet" href="../node_modules/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
     <script src="../node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>
 	<link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+    <style>
+     .appointment{
+         background-color: white;
+         padding: 15px;
+         border-radius: 5px;
+         width: 100%;
+         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+         margin-bottom: 20px;
+     }
+     h1{
+         color: #2ecc71;
+         font-weight: bold;
+     }
+     
+     table{
+         width: 100%;
+         border-collapse: collapse;
+         margin-top: 30px;
+         padding: 10px;
+     }
+     
+     table tr th, table tr td {
+         border: 1px solid #ddd;
+         padding: 10px;
+         text-align: center;
+     }
+     
+     tr th{
+         background-color: #2ecc71;
+         color: white;
+     }
+     
+     tr td{
+         background-color: #f9f9f9;
+     }
+     
+     table tbody td[colspan] {
+         text-align: center;
+         color: #888;
+         font-style: italic;
+     }
+     body{
+		background-color: #002c54;
+	}
+    nav{
+        background-color: #9fb6c3;
+    }
+    </style>
 </head>
-<body class="">
+<body>
 	<header>
-
-	<nav class="navbar navbar-expand-lg text-light d-flex flex-wrap bg-dark">
+	    <nav class="navbar navbar-expand-lg text-light d-flex flex-wrap">
             <div class="container-fluid">
                 <h1 class="title navbar-brand fs-1 text-success">Shri<span class="lab text-white">Laboratory</span></h1>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +77,7 @@
                         </li>
 
                         <li class="nav-item">
-                            <a href="./viewappointments.php" class="nav-link text-danger fs-5 fw-bold">Appointments</a>
+                            <a href="./appointments.php" class="nav-link text-danger fs-5 fw-bold">Appointments</a>
                         </li>
                         <li class="nav-item">
                             <a href="./feedback.php" class="nav-link fs-5 text-danger fw-bold">Feedback</a>
@@ -46,10 +91,10 @@
                 
             </div>
         </nav>
-
 	</header>
-	<main>
-		<h1 class="text-center pt-3 fs-1 text-success-emphasis">Users Information</h1>
+
+	<main class="appointment">
+		<h1 class="text-center pt-3 fs-1 text-success fw-bold">Users Information</h1>
 		<table class="table table-striped">
             <thead>
                 <tr>

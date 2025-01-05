@@ -67,15 +67,8 @@
             </thead>
             <tbody>
                 <?php
-                // session_start();
-                // $user = isset($_SESSION['userid']) ? $_SESSION['userid'] : null;
 
-                // if (!$user) {
-                //     echo "<p>Please log in to view your appointments.</p>";
-                //     exit;
-                // }
-
-                $sql3 = "SELECT * FROM `bookappointment` WHERE Test!='Array'";
+                $sql3 = "SELECT * FROM `book`";
                 $result = mysqli_query($mysqli, $sql3);
 
                 if ($result) {
@@ -84,7 +77,7 @@
 						$pname = $row['Pname'];
 						$contact = $row['ContactNo'];
 						$email = $row['Email'];
-						$userid = $row['userid2'];
+						$userid = $row['userid'];
 						$status = $row['Status'] ? $row['Status'] : 'Pending';
 						
 						// Validate and unserialize Test column

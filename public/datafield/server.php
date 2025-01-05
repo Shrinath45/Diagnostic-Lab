@@ -178,14 +178,14 @@ if (isset($_POST['Login3'])) {
 // Feedback PHP Code //
  
 
-if(isset($_POST['sendfeedback'])) {
+if(isset($_POST['send'])) {
  
 $feed1	= $mysqli->real_escape_string($_POST['AppoID3']);
-$feed2	= $mysqli->real_escape_string($_POST['Pname3']);
-$feed3	= $mysqli->real_escape_string($_POST['feedx']);
+$feed2	= $mysqli->real_escape_string($_POST['name3']);
+$feed3	= $mysqli->real_escape_string($_POST['msg']);
 
 if (empty($feed1)) {
-	array_push($errors, "Appointment ID is rewquired.");
+	array_push($errors, "Appointment ID is required.");
 	# code...
 }
 if (empty($feed2)) {
@@ -198,17 +198,16 @@ if (empty($feed3)) {
 }
 
 if (count($errors) == 0) {
-	$sqlll = "SELECT * FROM `book` WHERE Pname='$feed2' AND AppoID='$feed1' ";
+	$sqlll = "SELECT * FROM `book` WHERE AppoID='$feed1' ";
 	$resultl = mysqli_query($mysqli, $sqlll);
 	$numRows = mysqli_num_rows($resultl);
 
 	if($numRows == 1){
-		$sqlfeed = "INSERT INTO `Pfeedback` (`Pid`, `Pname`, `feedback`) VALUES ('$feed1', '$feed2', '$feed3') ";
+		$sqlfeed = "INSERT INTO `feedback` (`AppoID`, `name`, `feedback`) VALUES ('$feed1', '$feed2', '$feed3') ";
 
 	if ($mysqli->query($sqlfeed)) {
 		echo  'Feedback Sent Successfully.';
 	}
-	
  }
  else{
 	echo  'Patient is not found.';

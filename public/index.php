@@ -490,60 +490,117 @@ if($result = mysqli_fetch_array($findresult))
 
 
     
-    <section id="others">
+<section id="others">
         <div class="col-5 tdiv">
             <h1 class="fw-bold fs-1">Treatment History</h1>
-            <form action="" class=" w-75 mt-2 tform p-5" method="post">
+            <form class=" w-75 mt-2 tform p-5" method="post">
                 <h3 class="fw-bold">Search Treatment History By:</h3>
                 <dl class="align-items-center">
-                    <dt class="mt-3 fs-5">*Patient Id/Name</dt>
+                    <dt class="mt-3 fs-5">*Patient Id</dt>
                     <dd><input type="text" name="AppoID4" class="form-control w-100 mt-2" placeholder="Patient ID/Name"></dd>
-                    <dt><button type="submit" name="treatmentHistory" onclick="treat()" class="btn btn-primary mt-5 w-100 align-items-center">Search</button></dt>
+                    <dt><button type="button" data-bs-toggle="modal" data-bs-target="#treat" name="treatmentHistory1" class="btn btn-primary mt-5 w-100 align-items-center">Search</button></dt>
                 </dl>
             </form>
         </div>
+
+        <div class="modal" id="treat" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="treat">Treatment History</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    <div class="container">
+                        <h1 class="text-center">Treatment <span>History</span></h1>
+                        <?php ?>
+                            <table class="table table-striped" style="margin-top: 20px;">
+                                <thead>
+                                    <tr>
+                                        <th>Appointment ID</th>
+                                        <th>Patient Name</th>
+                                        <th>Test</th>
+                                        <th>Note</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+
+                                    if(isset($_POST['treatmentHistory1'])){
+                                        $AppoID = $mysqli->real_escape_string($_POST['AppoID4']);
+                                        // SQL query to fetch the treatment history
+                                        $sql11 = "SELECT * FROM `des` WHERE AppoID='$AppoID'";
+                                        $result11 = $mysqli->query($sql11);
+
+                                        if (mysqli_num_rows($result11) == 0) {
+                                            echo "<tr><td colspan='5' style='text-align:center; color:red;'>Wrong Appointment ID/Patient Name.</td></tr>";
+                                        } else {
+                                            // Loop through the results and display them
+                                            while ($row11 = $result11->fetch_assoc()) {
+                                                echo "<tr>
+                                                        <td>{$row11['AppoID']}</td>
+                                                        <td>{$row11['Pname']}</td>
+                                                        <td>{$row11['treatment']}</td>
+                                                        <td>{$row11['Note']}</td>
+                                                    
+                                                    </tr>";
+                                            }
+                                        }
+                                    }else{
+                                        echo "<tr><td colspan='5' style='text-align:center;'>Please enter an Appointment ID to view treatment history.</td></tr>";                                    }
+                                    // Check if any results were returned
+                                    
+                                    ?>
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-danger"><a href='path_to_pdf/{$row11['pdf']}' class='text-decoration:none' target='_blank'>View PDF</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
         <div class="col-5 tdiv">
             <h1 class="fw-bold">Send Feedback</h1>
-            <form action="" class="w-75 mt-2 tform p-5">
+            <form method="post" class="w-75 mt-2 tform p-5">
                 <dl>
-                    <dt><input type="text" class="form-control mt-2" placeholder="Appointment ID" name="AppoID3"></dt>
-                    <dt><input type="text" class="form-control mt-3" placeholder="Patient Name" name="Pname3"></dt>
-                    <dt><textarea name="" id="" class="form-control mt-3 h-25" rows="6" cols="6" placeholder="Write Something..."></textarea></dt>
-                    <dt><button class="btn btn-success mt-3 w-100" name="sendfeedback">Send!</button></dt>
+                    <dt><input type="text" class="form-control mt-2" value="<?php echo $id ?>" placeholder="Appointment ID" name="AppoID3"></dt>
+                    <dt><input type="text" class="form-control mt-3" value="<?php echo $pname ?>" placeholder="Patient Name" name="name3"></dt>
+                    <dt><textarea name="msg" id="" class="form-control mt-3 h-25" rows="6" cols="6" placeholder="Write Something..."></textarea></dt>
+                    <dt><button class="btn btn-success mt-3 w-100" name="send">Send!</button></dt>
                 </dl>
             </form>
         </div>
 
-    </section>
+</section>
 
 
-    <section id="history" class="d-none">
+<section id="history" class="">
     <?php
-// Only show treatment history if the form is submitted
-if (isset($_POST['treatmentHistory'])) {
-    // Fetch the Appointment ID from the form input
-    $AppoID = $mysqli->real_escape_string($_POST['AppoID4']);
-
-    // SQL query to fetch the treatment history
-    $sql11 = "SELECT * FROM des WHERE AppoID='$AppoID' OR Pname='$AppoID'";
-    $result11 = $mysqli->query($sql11);
-}
-?>
+    // Only show treatment history if the form is submitted
+    if(isset($_POST['treatmentHistory'])) {
+        // Fetch the Appointment ID from the form input
+        
+    }
+    ?>
 
 <!-- HTML starts here -->
 <div class="container">
     <h1 class="text-center">Treatment <span>History</span></h1>
-
-    <!-- Button Form to Show Treatment History -->
-    <form method="post" action="">
-        <input type="hidden" name="AppoID4" value="<?php echo isset($_POST['AppoID4']) ? $_POST['AppoID4'] : ''; ?>">
-        <button type="submit" name="treatmentHistory" style="padding: 5px; background-color: black; color: green;">
-            View Test Result
-        </button>
-    </form>
-
-    <!-- Treatment History Table -->
-    <?php if (isset($_POST['treatmentHistory'])): ?>
+    <?php if(isset($_POST['treatmentHistory1'])): ?>
         <table class="table table-striped" style="margin-top: 20px;">
             <thead>
                 <tr>
